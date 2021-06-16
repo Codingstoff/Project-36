@@ -4,6 +4,7 @@ var foodS,foodStock;
 var addFood,feedDoG;
 var foodObj;
 var feed,lastFed;
+var lastFedref;
 
 
 function preload(){
@@ -19,6 +20,11 @@ function setup() {
 
   foodStock=database.ref('Food');
   foodStock.on("value",readStock);
+
+  lastFedref = database.ref("FeedTime")
+  lastFedref.on("value", (data)=>{
+lastFed = data.val();
+  } )
   
   dog=createSprite(800,200,150,150);
   dog.addImage(sadDog);
@@ -37,8 +43,18 @@ function setup() {
 function draw() {
   background(46,139,87);
   foodObj.display();
-  
- 
+
+ push()
+ fill("white")
+  textSize(20)
+  if(lastFed > 12){
+    text("Last Feed :"+(lastFed-12) + "PM",700,50)
+    }else if(lastFed==0){
+      text("Last Feed : 12 AM",700,50);
+    }else{
+      text("Last Feed :"+lastFed+"AM",700,50)
+    }
+  pop()
   
 
  
@@ -68,13 +84,6 @@ function feedDog()
  
     })
     
-    if(lastFed > 12){
-      text("Last Feed :"(lastFed-12),"PM",550,50)
-      }else if(lastFed==0){
-        text("Last Feed : 12 AM",550,50);
-      }else{
-        text("Last Feed :",lastFed,"AM",550,50)
-      }
     
 }
 
